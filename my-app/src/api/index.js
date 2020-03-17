@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // const API_BASE_URL = 'http://www.mypress.jp:3003'; // json-server用
 // const API_BASE_URL = 'http://www.mypress.jp:8080'; // Django用
-const API_BASE_URL = 'http://127.0.0.1:3003';
+const API_BASE_URL = 'http://127.0.0.1:8000';
 
 const client = axios.create({
   baseURL: API_BASE_URL,
@@ -12,7 +12,9 @@ const client = axios.create({
 });
 
 export function fetchTasks() {
-  return client.get('/api/');
+  var res = client.get('/api/spots');
+  console.log(res)
+  return res
 }
 
 export function createTask(params) {

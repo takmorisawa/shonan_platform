@@ -10,15 +10,15 @@ const TaskList = props => {
       dataSource={props.tasks}
       renderItem={item => (
         <List.Item>
-          <Card title={item.title}>{item.description}</Card>
-          <select value={item.status} onChange={(e) => {onStatusChange(e, item.id)}}>
+          <Card title={item.name}>{item.address}</Card>
+          {/*<select value={item.status} onChange={(e) => {onStatusChange(e, item.id)}}>
             {TASK_STATUSES.map(status => (
               <option key={status} value={status}>{status}</option>
             ))}
           </select>
           <Button type="danger" onClick={()=>{props.onDeleteTask(item.id)}}>
             タスク削除
-          </Button>
+          </Button>*/}
         </List.Item>
       )}
     />
