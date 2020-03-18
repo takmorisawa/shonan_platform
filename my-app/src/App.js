@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { List, ListItem } from '@material-ui/core'
 import logo from './logo.svg';
 
 import TasksPage from './components/TasksPage';
@@ -9,6 +10,7 @@ import { createTask, editTask, deleteTask, fetchTasks } from './actions';
 import './App.css';
 
 class App extends Component {
+
   componentDidMount() {
     this.props.dispatch(fetchTasks());
   }
