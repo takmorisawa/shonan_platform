@@ -8,14 +8,14 @@ import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
-import tasksReducer from './reducers';
+import spotsReducer from './reducers';
 
 // ReactDOM.render(<App />, document.getElementById('root'));
 // serviceWorker.unregister();
 
 const rootReducer = (state = {}, action) => {
   return {
-    tasks: tasksReducer(state.tasks, action),
+    spots: spotsReducer(state.spots, action),
   };
 };
 const store = createStore(

@@ -1,30 +1,31 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+
 import { List, ListItem } from '@material-ui/core'
 import logo from './logo.svg';
 
 import TasksPage from './components/TasksPage';
 import FlashMessage from './components/FlashMessage';
-import { createTask, editTask, deleteTask, fetchTasks } from './actions';
+import { createSpot, editSpot, deleteSpot, fetchSpots } from './actions';
 
 import './App.css';
 
 class App extends Component {
 
   componentDidMount() {
-    this.props.dispatch(fetchTasks());
+    this.props.dispatch(fetchSpots());
   }
 
-  onCreateTask = ({ title, description }) => {
-    this.props.dispatch(createTask({ title, description }));
+  onCreateSpot = ({ name, address }) => {
+    this.props.dispatch(createSpot({ name, address }));
   };
 
   onStatusChange = (id, status) => {
-    this.props.dispatch(editTask(id, { status }));
+    this.props.dispatch(editSpot(id, { status }));
   };
 
-  onDeleteTask = (id) => {
-    this.props.dispatch(deleteTask(id));
+  onDeleteSpot = (id) => {
+    this.props.dispatch(deleteSpot(id));
   };
 
   render() {
@@ -33,9 +34,10 @@ class App extends Component {
         <div>
           {this.props.error && <FlashMessage message={this.props.error} />}
           <TasksPage
-            tasks={this.props.tasks}
-            onCreateTask={this.onCreateTask}
+            spots={this.props.spots}
+            onCreateSpot={this.onCreateSpot}
             onStatusChange={this.onStatusChange}
+            onDeleteSpot={this.onDeleteSpot}
             isLoading={this.props.isLoading}
           />
         </div>
@@ -45,8 +47,8 @@ class App extends Component {
 }
 
 function mapStateToProps(state) {
-  const { tasks, isLoading, error } = state.tasks;
-  return { tasks, isLoading, error };
+  const { spots, isLoading, error } = state.spots;
+  return { spots, isLoading, error };
 }
 
 export default connect(mapStateToProps)(App);

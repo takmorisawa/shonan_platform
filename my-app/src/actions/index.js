@@ -1,45 +1,45 @@
 import * as api from '../api';
 
-function fetchTasksSucceeded(tasks) {
+function fetchSpotsSucceeded(spots) {
   return {
-    type: 'FETCH_TASKS_SUCCEEDED',
+    type: 'FETCH_SPOTS_SUCCEEDED',
     payload: {
-      tasks,
+      spots,
     },
   };
 }
 
-function fetchTasksFailed(error) {
+function fetchSpotsFailed(error) {
   return {
-    type: 'FETCH_TASKS_FAILED',
+    type: 'FETCH_SPOTS_FAILED',
     payload: {
       error,
     },
   };
 }
 
-function fetchTasksStarted() {
+function fetchSpotsStarted() {
   return {
-    type: 'FETCH_TASKS_STARTED',
+    type: 'FETCH_SPOTS_STARTED',
   };
 }
 
-export function fetchTasks() {
+export function fetchSpots() {
   return dispatch => {
-    dispatch(fetchTasksStarted());
+    dispatch(fetchSpotsStarted());
 
     api
-      .fetchTasks()
+      .fetchSpots()
       .then(resp => {
-        dispatch(fetchTasksSucceeded(resp.data));
+        dispatch(fetchSpotsSucceeded(resp.data));
       })
       .catch(err => {
-        dispatch(fetchTasksFailed(err.message));
+        dispatch(fetchSpotsFailed(err.message));
       });
   };
 }
 
-function createTaskSucceeded(task) {
+function createSpotSucceeded(task) {
   return {
     type: 'CREATE_TASK_SUCCEEDED',
     payload: {
@@ -48,15 +48,15 @@ function createTaskSucceeded(task) {
   };
 }
 
-export function createTask({ title, description, status = 'Unstarted' }) {
+export function createSpot({ name, address }) {
   return dispatch => {
-    api.createTask({ title, description, status }).then(resp => {
-      dispatch(createTaskSucceeded(resp.data));
+    api.createSpot({ name, address }).then(resp => {
+      dispatch(createSpotSucceeded(resp.data));
     });
   };
 }
 
-function editTaskSucceeded(task) {
+function editSpotSucceeded(task) {
   return {
     type: 'EDIT_TASK_SUCCEEDED',
     payload: {
@@ -65,23 +65,23 @@ function editTaskSucceeded(task) {
   };
 }
 
-export function editTask(id, params = {}) {
+export function editSpot(id, params = {}) {
   return (dispatch, getState) => {
-    const task = getTaskById(getState().tasks.tasks, id);
+    const task = getTaskById(getState().spots.spots, id);
     const updatedTask = Object.assign({}, task, params);
-    api.editTask(id, updatedTask).then(resp => {
-      dispatch(editTaskSucceeded(resp.data));
+    api.editSpot(id, updatedTask).then(resp => {
+      dispatch(editSpotSucceeded(resp.data));
     });
   };
 }
 
 
-function getTaskById(tasks, id) {
-  return tasks.find(task => task.id === id);
+function getTaskById(spots, id) {
+  return spots.find(task => task.id === id);
 }
 
 
-function deleteTaskSucceeded(id) {
+function deleteSpotSucceeded(id) {
   return {
     type: 'DELETE_TASK_SUCCEEDED',
     payload: {
@@ -90,11 +90,11 @@ function deleteTaskSucceeded(id) {
   };
 }
 
-export function deleteTask(id) {
+export function deleteSpot(id) {
   return (dispatch, getState) => {
-    api.deleteTask(id).then(resp => {
+    api.deleteSpot(id).then(resp => {
       console.log(resp)
-      dispatch(deleteTaskSucceeded(id));
+      dispatch(deleteSpotSucceeded(id));
     });
   };
 }
