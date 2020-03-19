@@ -11,21 +11,21 @@ const client = axios.create({
   },
 });
 
-export function fetchTasks() {
-  var res = client.get('/api/spots');
+export function fetchSpots() {
+  var res = client.get('/api/spots/');
   console.log(res)
   return res
 }
 
-export function createTask(params) {
+export function createSpot(params) {
   console.log(params)
-  return client.post('/api/', params);
+  return client.post('/api/spots/', params);
 }
 
-export function editTask(id, params) {
+export function editSpot(id, params) {
   return client.put(`/api/${id}`, params);
 }
 
-export function deleteTask(id) {
-  return client.delete(`/api/${id}/`);
+export function deleteSpot(id) {
+  return client.delete(`/api/spots/${id}/`);
 }

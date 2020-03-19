@@ -1,37 +1,32 @@
 import React from 'react';
-import { List, ListItem, Card, CardContent } from '@material-ui/core'
+import { Button, List, ListItem, Card, CardContent } from '@material-ui/core'
+import { MuiThemeProvider } from 'material-ui/styles'
+import { theme } from '../theme'
 import { TASK_STATUSES } from '../constants';
-
 
 const TaskList = props => {
   return (
+    <MuiThemeProvider theme={theme}>
     <List>
-        {props.tasks.map(item => (
+        {props.spots.map(item => (
           <ListItem>
-            <Card>
+            <Card style={{minWidth:"600px"}}>
               <CardContent>
                 {item.name}
               </CardContent>
               <CardContent>
                 {item.address}
               </CardContent>
+              <Button variant="contained" color="primary"　style={{margin:"15px"}}
+              onClick={()=>{props.onDeleteSpot(item.id)}}>
+              投稿削除
+              </Button>
             </Card>
-            {/*<select value={item.status} onChange={(e) => {onStatusChange(e, item.id)}}>
-              {TASK_STATUSES.map(status => (
-                <option key={status} value={status}>{status}</option>
-              ))}
-            </select>
-            <Button type="danger" onClick={()=>{props.onDeleteTask(item.id)}}>
-              タスク削除
-            </Button>*/}
           </ListItem>
         ))}
     </List>
+    </MuiThemeProvider>
   );
-
-  function onStatusChange(e, id) {
-    props.onStatusChange(id, e.target.value);
-  }
 };
 
 export default TaskList;

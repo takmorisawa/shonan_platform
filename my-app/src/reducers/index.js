@@ -1,25 +1,25 @@
 const initialState = {
-  tasks: [],
+  spots: [],
   isLoading: false,
   error: null,
 };
 
-export default function tasks(state = initialState, action) {
+export default function spots(state = initialState, action) {
   switch (action.type) {
-    case 'FETCH_TASKS_STARTED': {
+    case 'FETCH_SPOTS_STARTED': {
       return {
         ...state,
         isLoading: true,
       };
     }
-    case 'FETCH_TASKS_SUCCEEDED': {
+    case 'FETCH_SPOTS_SUCCEEDED': {
       return {
         ...state,
-        tasks: action.payload.tasks,
+        spots: action.payload.spots,
         isLoading: false,
       };
     }
-    case 'FETCH_TASKS_FAILED': {
+    case 'FETCH_SPOTS_FAILED': {
       return {
         ...state,
         isLoading: false,
@@ -29,12 +29,12 @@ export default function tasks(state = initialState, action) {
     case 'CREATE_TASK_SUCCEEDED': {
       return {
         ...state,
-        tasks: state.tasks.concat(action.payload.task),
+        spots: state.spots.concat(action.payload.task),
       };
     }
     case 'EDIT_TASK_SUCCEEDED': {
       const { payload } = action;
-      const nextTasks = state.tasks.map(task => {
+      const nextSpots = state.spots.map(task => {
         if (task.id === payload.task.id) {
           return payload.task;
         }
@@ -43,15 +43,15 @@ export default function tasks(state = initialState, action) {
       });
       return {
         ...state,
-        tasks: nextTasks,
+        spots: nextSpots,
       };
     }
     case 'DELETE_TASK_SUCCEEDED': {
       const { payload } = action;
-      const nextTasks = state.tasks.filter(task => task.id !== payload.id)
+      const nextSpots = state.spots.filter(task => task.id !== payload.id)
       return {
         ...state,
-        tasks: nextTasks,
+        spots: nextSpots,
       };
     }
     default: {
