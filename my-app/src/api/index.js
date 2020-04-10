@@ -1,8 +1,9 @@
 import axios from 'axios';
 
-// const API_BASE_URL = 'http://www.mypress.jp:3003'; // json-server用
-// const API_BASE_URL = 'http://www.mypress.jp:8080'; // Django用
-const API_BASE_URL = 'http://127.0.0.1:8000';
+const API_BASE_URL = 'http://18.216.105.170';
+const API_PATH = '/api';
+// const API_BASE_URL = 'http://127.0.0.1:8000';
+// const API_PATH = '';
 
 const client = axios.create({
   baseURL: API_BASE_URL,
@@ -12,20 +13,19 @@ const client = axios.create({
 });
 
 export function fetchSpots() {
-  var res = client.get('/api/spots/');
+  var res = client.get(API_PATH + '/spots/');
   console.log(res)
   return res
 }
 
 export function createSpot(params) {
-  console.log(params)
-  return client.post('/api/spots/', params);
+  return client.post(API_PATH + '/spots/', params);
 }
 
 export function editSpot(id, params) {
-  return client.put(`/api/${id}`, params);
+  return client.put(API_PATH + '/pots/${id}', params);
 }
 
 export function deleteSpot(id) {
-  return client.delete(`/api/spots/${id}/`);
+  return client.delete(API_PATH + '/spots/${id}/');
 }
