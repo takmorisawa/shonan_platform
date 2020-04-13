@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://18.216.105.170';
-const API_PATH = '/api';
-// const API_BASE_URL = 'http://127.0.0.1:8000';
-// const API_PATH = '';
+// const API_BASE_URL = 'http://18.216.105.170';
+// const API_PATH = '/api';
+const API_BASE_URL = 'http://127.0.0.1:8000';
+const API_PATH = '';
 
 const client = axios.create({
   baseURL: API_BASE_URL,
