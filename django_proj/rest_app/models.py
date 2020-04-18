@@ -25,7 +25,7 @@ class Report(models.Model):
     user_id=models.CharField("ユーザーID",max_length=255)
     date=models.DateField("投稿日時",default=datetime.now().date())
     usable=models.BooleanField("使用可否",default=False)
-    comment=models.CharField("コメント",max_length=255)
+    comment=models.TextField("コメント")
     device=models.ForeignKey(Device,on_delete=models.CASCADE)
     product=models.ForeignKey(Product,on_delete=models.CASCADE)
 

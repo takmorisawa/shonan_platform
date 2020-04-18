@@ -10,90 +10,136 @@
         const userId = document.postForm.userId.value;
         const usable = document.postForm.usable.checked ? "true" : "false";
         const comment = document.postForm.comment.value;
+        const deviceId = document.postForm.deviceId.value;
 
-        postReport(userId, usable, comment);
+        postReport(userId, usable, comment, deviceId);
       }
 
       function onClickShowResult() {
         const template = document.getElementById("template");
+        const deviceId = document.postForm.deviceId.value;
 
-        analyzeReports().then((result) => {
+        analyzeReports(deviceId).then((result) => {
+
+          const func = (list, table) => {
+            table.innerText = "";
+            list.forEach((item) => {
+              const clone = document.importNode(template.content, true);
+              const td = clone.querySelectorAll("td");
+              td[0].textContent = item["user_id"];
+              td[1].textContent = item["date"];
+              td[2].textContent = item["comment"];
+              table.appendChild(clone);
+            });
+          };
 
           const yesList = result["yes"];
           const yesTable = document.getElementById("yes_table");
-          yesList.forEach((item) => {
-            const clone = document.importNode(template.content, true);
-            const td = clone.querySelectorAll("td");
-            td[0].textContent = item["user_id"];
-            td[1].textContent = item["date"];
-            td[2].textContent = item["comment"];
-            yesTable.appendChild(clone);
-          });
+          func(yesList,yesTable);
 
           const noList = result["no"];
           const noTable = document.getElementById("no_table");
-          noList.forEach((item) => {
-            const clone = document.importNode(template.content, true);
-            const td = clone.querySelectorAll("td");
-            td[0].textContent = item["user_id"];
-            td[1].textContent = item["date"];
-            td[2].textContent = item["comment"];
-            noTable.appendChild(clone);
-          });
+          func(noList,noTable);
         });
       }
+
+    function onClickGetSerieses() {
+      getSerieses().then(result => {
+        console.log(result);
+      })
+    }
+
+    function onClickGetDevices() {
+      const seriesId = document.seriesForm.seriesId.value;
+      getDevices(seriesId).then(result => {
+        console.log(result);
+      })
+    }
+
+    function onClickCountReports() {
+      const seriesId = document.seriesForm.seriesId.value;
+      countReports(seriesId).then(result => {
+        console.log(result);
+      })
+    }
 
     </script>
   </head>
   <body>
-    <form style="background-color: gray" class="" name="postForm" action="index.html" method="post">
-      <label>user_id:</label>
-      <input type="text" name="userId" value="test_user_id">
-      <br>
-      <label>yes/no:</label>
-      <input type="checkbox" name="usable" checked>
-      <br>
-      <label>commnet:</label>
-      <input type="text" name="comment" value="this is a test comment.">
 
+    <input type="button" name="button" value="get all serieses"
+    onclick="onClickGetSerieses()"/>
+
+    <form class="" action="index.html" method="post" name="seriesForm">
+      <label for="">series id: </label>
+      <input type="text" name="seriesId" value="1">
       <br>
 
-      <input type="button" name="button" value="post report"
-      onclick="onClicInput()"/>
+      <input type="button" name="button" value="get devices by series id"
+      onclick="onClickGetDevices()"/>
+      <input type="button" name="button" value="get yes/no count by series id"
+      onclick="onClickCountReports()"/>
     </form>
 
-    <br><br>
+    <br>
 
-    <input type="button" name="button" value="show reports"
-    onclick="onClickShowResult()"/>
+    <form style="background-color: gray" class="" name="postForm" action="index.html" method="post">
 
-    <div class="">
-      <div class="" style="float: left">
-        <label>yes repots</label>
-        <table id="yes_table" border="1">
-          <thead>
-            <tr>
-              <td>user_id</td>
-              <td>date</td>
-              <td>comment</td>
-            </tr>
-          </thead>
-        </table>
+      <label for="">device id: </label>
+      <input type="text" name="deviceId" value="1">
+
+      <br>
+
+      <input type="button" name="button" value="show reports"
+      onclick="onClickShowResult()"/>
+
+      <div class="">
+        <div class="" style="float: left">
+          <label>yes repots</label>
+          <table id="yes_table" border="1">
+            <thead>
+              <tr>
+                <td>user_id</td>
+                <td>date</td>
+                <td>comment</td>
+              </tr>
+            </thead>
+          </table>
+        </div>
+
+        <div class="" style="float left">
+          <label>no repots</label>
+          <table id="no_table" border="1">
+            <thead>
+              <tr>
+                <td>user_id</td>
+                <td>date</td>
+                <td>comment</td>
+              </tr>
+            </thead>
+          </table>
+        </div>
       </div>
 
-      <div class="" style="float left">
-        <label>no repots</label>
-        <table id="no_table" border="1">
-          <thead>
-            <tr>
-              <td>user_id</td>
-              <td>date</td>
-              <td>comment</td>
-            </tr>
-          </thead>
-        </table>
+      <div class="">
+        <label>user_id:</label>
+        <input type="text" name="userId" value="test_user_id">
+        <br>
+
+        <label>yes/no:</label>
+        <input type="checkbox" name="usable" checked>
+        <br>
+
+        <label>commnet:</label>
+        <input type="text" name="comment" value="this is a test comment.">
+        <br>
+
+        <input type="button" name="button" value="post report"
+        onclick="onClicInput()"/>
+
       </div>
-    </div>
+
+    </form>
 
     <template id="template" style="float left">
       <tr>

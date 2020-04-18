@@ -5,6 +5,5 @@ from rest_app.views import ProductViewSet,SeriesViewSet,DeviceViewSet,ReportView
 router=routers.DefaultRouter()
 router.register(r'products',ProductViewSet)
 router.register(r'serieses',SeriesViewSet)
-router.register(r'devices/<int:pk>/related_reports',DeviceViewSet)
 router.register(r'devices',DeviceViewSet)
 router.register(r'rakutensim/reports',ReportViewSet)
