@@ -1,17 +1,28 @@
 from rest_framework import serializers
-from rest_app.models import Spot,Post,Report
+from rest_app.models import Product,Series,Device,Report
 
-class SpotSerializer(serializers.ModelSerializer):
-    class Meta:
-        model=Spot
-        fields=("id","name","address")
 
-class PostSerializer(serializers.ModelSerializer):
+class ProductSerializer(serializers.ModelSerializer):
     class Meta:
-        model=Post
-        fields=("id","comment")
-        
+        model=Product
+        fields=("id","name")
+
+class SeriesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Series
+        fields=("id","name")
+
+class DeviceSerializer(serializers.ModelSerializer):
+    series=serializers.PrimaryKeyRelatedField(queryset=Series.objects.all())
+
+    class Meta:
+        model=Device
+        fields=("id","name","series")
+
 class ReportSerializer(serializers.ModelSerializer):
+    device=serializers.PrimaryKeyRelatedField(queryset=Device.objects.all())
+    product=serializers.PrimaryKeyRelatedField(queryset=Product.objects.all())
+
     class Meta:
         model=Report
-        fields=("user_id","date","usable","comment")
+        fields=("user_id","date","usable","comment","device","product")

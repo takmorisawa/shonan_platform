@@ -1,22 +1,27 @@
 from django.contrib import admin
-from rest_app.models import Spot,Post,Report
+from rest_app.models import Product,Series,Device,Report
 
-# admin.site.register(Spot)
-# admin.site.register(Post)
 
-class SpotAdmin(admin.ModelAdmin):
-    list_display=("id","name","address")
-    list_display_links=("id","name","address")
+class ProductAdmin(admin.ModelAdmin):
+    list_display=("id","name")
+    list_display_links=("id","name")
 
-class PostAdmin(admin.ModelAdmin):
-    list_display=("id","comment")
-    list_display_links=("id","comment")
-    raw_id_fields=("spot",)
+class SeriesAdmin(admin.ModelAdmin):
+    list_display=("id","name")
+    list_display_links=("id","name")
+
+class DeviceAdmin(admin.ModelAdmin):
+    list_display=("id","name","series")
+    list_display_links=("id","name")
+    raw_id_fields=("series",)
 
 class ReportAdmin(admin.ModelAdmin):
-    list_display=("id","user_id","date","comment")
+    list_display=("id","user_id","date","comment","device","product")
     list_display_links=("id","user_id","date","comment")
+    raw_id_fields=("device","product")
 
-admin.site.register(Spot,SpotAdmin)
-admin.site.register(Post,PostAdmin)
+
+admin.site.register(Product,ProductAdmin)
+admin.site.register(Series,SeriesAdmin)
+admin.site.register(Device,DeviceAdmin)
 admin.site.register(Report,ReportAdmin)

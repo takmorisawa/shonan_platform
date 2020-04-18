@@ -1,24 +1,33 @@
 from django.db import models
+from datetime import datetime
 
-class Spot(models.Model):
+
+class Product(models.Model):
     name=models.CharField("名称",max_length=255)
-    address=models.CharField("住所",max_length=255)
 
     def __str__(self):
         return self.name
 
-class Post(models.Model):
-    spot=models.ForeignKey(Spot,verbose_name="スポット",related_name="posts",on_delete=models.CASCADE)
-    comment=models.TextField("コメント",blank=True)
+class Series(models.Model):
+    name=models.CharField("シリーズ",max_length=255)
 
     def __str__(self):
-        return self.comment
+        return self.name
+
+class Device(models.Model):
+    name=models.CharField("機種名",max_length=255)
+    series=models.ForeignKey(Series,on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
 
 class Report(models.Model):
     user_id=models.CharField("ユーザーID",max_length=255)
-    date=models.DateField("投稿日時")
+    date=models.DateField("投稿日時",default=datetime.now().date())
     usable=models.BooleanField("使用可否",default=False)
     comment=models.CharField("コメント",max_length=255)
+    device=models.ForeignKey(Device,on_delete=models.CASCADE)
+    product=models.ForeignKey(Product,on_delete=models.CASCADE)
 
     def __str__(self):
         return self.comment
