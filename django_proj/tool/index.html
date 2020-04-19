@@ -6,20 +6,22 @@
     <script type="text/javascript" src="rakutensim_api.js"></script>
     <script type="text/javascript">
 
+      const authToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJ1c2VybmFtZSI6ImFkbWluIiwiZXhwIjoxNTg3Mjc2MTY2LCJlbWFpbCI6IiJ9.xpO7uGD3Nw1CgeU2ephLf0xJcTEGOlDMGHGZXx9QsqQ";
+
       function onClicInput() {
         const userId = document.postForm.userId.value;
         const usable = document.postForm.usable.checked ? "true" : "false";
         const comment = document.postForm.comment.value;
         const deviceId = document.postForm.deviceId.value;
 
-        postReport(userId, usable, comment, deviceId);
+        postReport(userId, usable, comment, deviceId, authToken);
       }
 
       function onClickShowResult() {
         const template = document.getElementById("template");
         const deviceId = document.postForm.deviceId.value;
 
-        analyzeReports(deviceId).then((result) => {
+        analyzeReports(deviceId, authToken).then((result) => {
 
           const func = (list, table) => {
             table.innerText = "";
@@ -44,21 +46,21 @@
       }
 
     function onClickGetSerieses() {
-      getSerieses().then(result => {
+      getSerieses(authToken).then(result => {
         console.log(result);
       })
     }
 
     function onClickGetDevices() {
       const seriesId = document.seriesForm.seriesId.value;
-      getDevices(seriesId).then(result => {
+      getDevices(seriesId, authToken).then(result => {
         console.log(result);
       })
     }
 
     function onClickCountReports() {
       const seriesId = document.seriesForm.seriesId.value;
-      countReports(seriesId).then(result => {
+      countReports(seriesId, authToken).then(result => {
         console.log(result);
       })
     }
