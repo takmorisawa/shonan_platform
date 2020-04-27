@@ -35,6 +35,7 @@ class SeriesViewSet(viewsets.ModelViewSet):
 
         devices=Device.objects.filter(series_id=pk)
         ret={ device.id: {
+                "device_id": device.id,
                 "device_name": device.name,
                 "yes": 0,
                 "no": 0 }
