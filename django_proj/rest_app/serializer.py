@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from django.utils.html import escape
 from rest_app.models import Product,Series,Device,Report
 
 
@@ -22,6 +23,9 @@ class DeviceSerializer(serializers.ModelSerializer):
 class ReportSerializer(serializers.ModelSerializer):
     device=serializers.PrimaryKeyRelatedField(queryset=Device.objects.all())
     product=serializers.PrimaryKeyRelatedField(queryset=Product.objects.all())
+
+    def validate_comment(self,value):
+        return escape(value);
 
     class Meta:
         model=Report
