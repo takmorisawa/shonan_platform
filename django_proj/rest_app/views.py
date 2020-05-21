@@ -31,7 +31,7 @@ class SeriesViewSet(viewsets.ModelViewSet):
     def count_related_reports(self,request,pk=None):
         queryset=Report.objects.prefetch_related(
         "device__series").filter(
-        device__series=pk).values(
+        device__series=pk,authorized=True).values(
         "device_id","usable").annotate(
         dcount=Count("device_id"))
 
