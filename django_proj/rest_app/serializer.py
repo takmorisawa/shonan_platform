@@ -25,8 +25,8 @@ class ReportSerializer(serializers.ModelSerializer):
     product=serializers.PrimaryKeyRelatedField(queryset=Product.objects.all())
 
     def validate_comment(self,value):
-        return escape(value);
+        return value;
 
     class Meta:
         model=Report
-        fields=("user_id","date","usable","comment","device","product")
+        fields=("user_id","date","usable","comment","enable_escape","authorized","device","product")
