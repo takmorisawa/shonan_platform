@@ -79,17 +79,12 @@ class ReportViewSet(viewsets.ModelViewSet):
     def list(self,request):
         queryset = ReportViewSet.queryset
 
-        value = request.query_params.get('authorized',None)
-        if value is not None:
-            queryset = queryset.filter(authorized=value)
-
-        value = request.query_params.get('device',None)
-        if value is not None:
-            queryset = queryset.filter(device=value)
-
-        value = request.query_params.get('product',None)
-        if value is not None:
-            queryset = queryset.filter(product=value)
+        query_dict = { k:v[0].split(",") for k,v in dict(request.query_params).items()}
+        query_dict = {
+            k if len(v)==1 else k + "__in"
+            : v[0] if len(v)==1 else v
+            for k,v in query_dict.items() }
+        queryset = queryset.filter(**query_dict)
 
         serializer = ReportSerializer(queryset,many=True)
         for item in [item for item in serializer.data if item["enable_escape"]]:
