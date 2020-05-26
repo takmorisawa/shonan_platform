@@ -1,0 +1,64 @@
+{% extends "rest_framework/base.html" %}
+{% load static %}
+{% block title %}CSVファイルアップロード{% endblock %}
+
+{% block extrahead %}
+<script>
+$(function(){
+  $('.dropify').dropify();
+})
+</script>
+{% endblock %}
+
+{% block branding %}
+  <a class='navbar-brand' rel="nofollow" href=''>
+      みんなの楽天SIM CSVファイルアップロード
+  </a>
+{% endblock %}
+
+{% block content %}
+
+<!-- <h3>アップロード</h3> -->
+{{column}}
+<form action="{% url 'util_app:upload' %}" method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  <input type="file" class="dropify" data-default-file="ファイルを選択してください" name="csv">
+  <button type="submit" class="btn btn-primary name="button">データチェック</button>
+</form>
+
+<h3>プレビュー</h3>
+<table class="table table-striped">
+  <tr>
+    <th>user_id</th>
+    <th>usable</th>
+    <th>commnet</th>
+    <th>enable_escape</th>
+    <th>authorized</th>
+    <th>device</th>
+    <th>product</th>
+  </tr>
+  {% for data in records %}
+  <tr>
+    <td>{{data.user_id}}</td>
+    <td>{{data.usable}}</td>
+    <td>{{data.comment}}</td>
+    <td>{{data.enable_escape}}</td>
+    <td>{{data.authorized}}</td>
+    <td>{{data.device}}</td>
+    <td>{{data.product}}</td>
+  </tr>
+  {% endfor %}
+</table>
+
+{% if message %}
+<p>{{message}}</p>
+{% else %}
+{% endif %}
+
+<form action="{% url 'util_app:upload' %}" method="post">
+  {% csrf_token %}
+  <input type="hidden" value="{{json}}" name="json">
+  <button type="submit" class="btn btn-primary name="button" {{disabled}}>アップロード</button>
+</form>
+
+{% endblock content %}
