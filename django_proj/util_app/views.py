@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect
 from rest_app.models import Report
 from rest_app.serializer import ReportSerializer
-import pandas as pd
 from io import TextIOWrapper, StringIO
 import json
+import csv
 
 
 def upload(request):
@@ -11,12 +11,18 @@ def upload(request):
 
     if 'csv' in request.FILES:
         form_data = TextIOWrapper(request.FILES['csv'].file, encoding='utf-8')
-        df = pd.read_csv(form_data)
-        json_data = df.to_json(orient="records")
+
+        reader = csv.reader(form_data)
+        header = next(reader)
+        tmp_data = []
+        for row in reader:
+            tmp_data.append({k:v for k,v in zip(header, row)})
+        json_data = json.dumps(tmp_data)
+
         data = json.loads(json_data)
         serializer = ReportSerializer(data=data, many=True)
         if serializer.is_valid():
-            params["columns"] = df.columns.get_values()
+            params["columns"] = header
             params["records"] = data
             params["json"] = json_data
         else:
