@@ -1,0 +1,19 @@
+{% extends "rest_framework/base.html" %}
+{% load static %}
+{% block title %}CSVファイルアップロード{% endblock %}
+
+{% block branding %}
+  <a class='navbar-brand' rel="nofollow" href=''>
+      みんなの楽天SIM CSVファイルアップロード
+  </a>
+{% endblock %}
+
+{% block content %}
+
+<ul>
+  {% for data in tables %}
+  <li><a href={{data.1}}>{{data.0}}</a></li>
+  {% endfor %}
+</ul>
+
+{% endblock content %}

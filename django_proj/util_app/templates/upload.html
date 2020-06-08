@@ -19,8 +19,7 @@ $(function(){
 {% block content %}
 
 <!-- <h3>アップロード</h3> -->
-{{column}}
-<form action="{% url 'util_app:upload' %}" method="post" enctype="multipart/form-data">
+<form action="" method="post" enctype="multipart/form-data">
   {% csrf_token %}
   <input type="file" class="dropify" data-default-file="ファイルを選択してください" name="csv">
   <button type="submit" class="btn btn-primary name="button">データチェック</button>
@@ -28,24 +27,19 @@ $(function(){
 
 <h3>プレビュー</h3>
 <table class="table table-striped">
+  {% if records %}
   <tr>
-    <th>user_id</th>
-    <th>usable</th>
-    <th>comment</th>
-    <th>enable_escape</th>
-    <th>authorized</th>
-    <th>device</th>
-    <th>product</th>
+    {% for k, v in records.0.items %}
+    <th>{{k}}</th>
+    {% endfor %}
   </tr>
-  {% for data in records %}
+  {% endif %}
+
+  {% for row in records %}
   <tr>
-    <td>{{data.user_id}}</td>
-    <td>{{data.usable}}</td>
-    <td>{{data.comment}}</td>
-    <td>{{data.enable_escape}}</td>
-    <td>{{data.authorized}}</td>
-    <td>{{data.device}}</td>
-    <td>{{data.product}}</td>
+    {% for k, v in row.items %}
+    <td>{{v}}</td>
+    {% endfor %}
   </tr>
   {% endfor %}
 </table>
@@ -55,7 +49,7 @@ $(function(){
 {% else %}
 {% endif %}
 
-<form action="{% url 'util_app:upload' %}" method="post">
+<form action="" method="post">
   {% csrf_token %}
   <input type="hidden" value="{{json}}" name="json">
   <button type="submit" class="btn btn-primary name="button" {{disabled}}>アップロード</button>
