@@ -25,7 +25,7 @@ class CsvUploadViewSet(metaclass=Meta):
     def validate_detail(request, serializer_class):
 
         path = request.path
-        m = re.match("/util/upload/(.+)/.*", path)
+        m = re.match("/util/upload/([^/]+)/.*", path)
         target = m.groups()[0] if m else ""
 
         params = {
@@ -38,8 +38,6 @@ class CsvUploadViewSet(metaclass=Meta):
             params["message"] = "アップロード成功"
         elif "fail" in path:
             params["message"] = "アップロード失敗"
-
-        m = re.match("/util/upload/(.+)/.*", path)
 
         if 'csv' in request.FILES:
             form_data = TextIOWrapper(request.FILES['csv'].file, encoding='utf-8')
