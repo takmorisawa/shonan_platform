@@ -29,22 +29,42 @@ class SeriesViewSet(viewsets.ModelViewSet):
 
     @action(detail=True)
     def count_related_reports(self,request,pk=None):
-        queryset=Report.objects.prefetch_related(
-        "device__series").filter(
-        device__series=pk,authorized=True).values(
-        "device_id","usable").annotate(
-        dcount=Count("device_id"))
-
         devices=Device.objects.filter(series_id=pk)
         ret={ device.id: {
                 "device_id": device.id,
                 "device_name": device.name,
                 "yes": 0,
-                "no": 0 }
+                "no": 0,
+                "all": 0,
+                "voice_only": 0,
+                "data_only": 0,
+                "none": 0}
               for device in devices }
 
-        for query in queryset:
+        queryset=Report.objects.prefetch_related(
+        "device__series").filter(
+        device__series=pk,authorized=True)
+
+        usableset=queryset.values(
+        "device_id","usable").annotate(
+        dcount=Count("device_id"))
+
+        specset=queryset.values(
+        "device_id","voice","data").annotate(
+        dcount=Count("device_id"))
+
+        for query in usableset:
             ret[query["device_id"]]["yes" if query["usable"] else "no"]=query["dcount"]
+
+        for query in specset:
+            device_id=query["device_id"]
+            dcount=query["dcount"]
+            if query["voice"]==Report.AVAILABLE:
+                key="all" if query["data"]==Report.AVAILABLE else "voice_only"
+                ret[device_id][key]+=dcount
+            else:
+                key="data_only" if query["data"]==Report.AVAILABLE else "none"
+                ret[device_id][key]+=dcount
 
         return Response(ret.values())
 
