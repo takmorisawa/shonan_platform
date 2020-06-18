@@ -28,6 +28,7 @@ class Report(models.Model):
     comment=models.TextField("コメント")
     enable_escape=models.BooleanField("コメントのURLエンコード",default=True)
     authorized=models.BooleanField("認可",default=False)
+    priority=models.IntegerField("優先度",default=100)
     device=models.ForeignKey(Device,on_delete=models.CASCADE)
     product=models.ForeignKey(Product,on_delete=models.CASCADE)
 

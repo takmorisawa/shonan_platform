@@ -84,7 +84,7 @@ class ReportViewSet(viewsets.ModelViewSet):
             k if len(v)==1 else k + "__in"
             : v[0] if len(v)==1 else v
             for k,v in query_dict.items() }
-        queryset = queryset.filter(**query_dict)
+        queryset = queryset.filter(**query_dict).order_by("-priority")
 
         serializer = ReportSerializer(queryset,many=True)
         for item in [item for item in serializer.data if item["enable_escape"]]:

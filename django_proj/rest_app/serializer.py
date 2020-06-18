@@ -29,4 +29,4 @@ class ReportSerializer(serializers.ModelSerializer):
 
     class Meta:
         model=Report
-        fields=("user_id","date","usable","comment","enable_escape","authorized","device","product")
+        fields=("user_id","date","usable","comment","enable_escape","authorized","priority","device","product")

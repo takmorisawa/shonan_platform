@@ -16,8 +16,8 @@ class DeviceAdmin(admin.ModelAdmin):
     raw_id_fields=("series",)
 
 class ReportAdmin(admin.ModelAdmin):
-    list_display=("id","user_id","date","usable","comment","enable_escape","authorized","device","product")
-    list_display_links=("id","user_id","date","usable","comment","enable_escape","authorized")
+    list_display=("id","user_id","date","usable","comment","enable_escape","authorized","priority","device","product")
+    list_display_links=("id","user_id","date","usable","comment","enable_escape","authorized","priority")
     # raw_id_fields=("device","product")
 
 
