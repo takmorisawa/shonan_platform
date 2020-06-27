@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.utils.html import escape
-from rest_app.models import Product,Series,Device,Report
+from rest_app.models import Product,Series,Device,Report,Support
 
 
 class ProductSerializer(serializers.ModelSerializer):
@@ -31,3 +31,9 @@ class ReportSerializer(serializers.ModelSerializer):
         model=Report
         fields=("user_id","date","usable","comment","enable_escape",
             "authorized","priority","voice","data","device","product")
+
+class SupportSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model=Support
+        fields=("id","device_name","maker_name","voice","data","tethering","sns","product")

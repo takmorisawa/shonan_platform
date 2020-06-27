@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
-from rest_app.models import Report, Device
-from rest_app.serializer import ReportSerializer, DeviceSerializer
+from rest_app.models import Report, Device, Support
+from rest_app.serializer import ReportSerializer, DeviceSerializer, SupportSerializer
 from io import TextIOWrapper, StringIO
 import json
 import csv
@@ -90,8 +90,13 @@ class ReportUploadViewSet(CsvUploadViewSet):
     model_class = Report
 
 
+class SupportUploadViewSet(CsvUploadViewSet):
+    serializer_class = SupportSerializer
+    model_class = Support
+
+
 def upload_top(request):
     params = {
         "breadcrumblist" : [ ["HOME", ""] ],
-        "tables" : [ ["Device", "./device"], ["Report", "./report"] ] }
+        "tables" : [ ["Device", "./device"], ["Report", "./report"], ["Support", "./support"] ] }
     return render(request, 'upload_top.html', params)

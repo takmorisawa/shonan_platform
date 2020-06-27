@@ -45,3 +45,15 @@ class Report(models.Model):
 
     def __str__(self):
         return self.comment
+
+class Support(models.Model):
+    maker_name=models.CharField("メーカー",max_length=255)
+    device_name=models.CharField("機種名",max_length=255)
+    voice=models.CharField("通話",max_length=255)
+    data=models.CharField("データ通信",max_length=255)
+    tethering=models.CharField("テザリング",max_length=255)
+    sns=models.CharField("SNS",max_length=255)
+    product=models.ForeignKey(Product,on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.device_name

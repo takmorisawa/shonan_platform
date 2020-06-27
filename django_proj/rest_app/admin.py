@@ -1,5 +1,5 @@
 from django.contrib import admin
-from rest_app.models import Product,Series,Device,Report
+from rest_app.models import Product,Series,Device,Report,Support
 
 
 class ProductAdmin(admin.ModelAdmin):
@@ -22,8 +22,13 @@ class ReportAdmin(admin.ModelAdmin):
         "authorized","voice","data","priority")
     # raw_id_fields=("device","product")
 
+class SupportAdmin(admin.ModelAdmin):
+    list_display=("id","device_name","maker_name","voice","data","tethering","sns","product")
+    list_display_links=("id","device_name","maker_name","voice","data","tethering","sns")
+    #raw_id_fields=("product",)
 
 admin.site.register(Product,ProductAdmin)
 admin.site.register(Series,SeriesAdmin)
 admin.site.register(Device,DeviceAdmin)
 admin.site.register(Report,ReportAdmin)
+admin.site.register(Support,SupportAdmin)

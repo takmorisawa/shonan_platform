@@ -8,8 +8,8 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 
-from rest_app.models import Product,Series,Device,Report
-from rest_app.serializer import ProductSerializer,SeriesSerializer,DeviceSerializer,ReportSerializer
+from rest_app.models import Product,Series,Device,Report,Support
+from rest_app.serializer import ProductSerializer,SeriesSerializer,DeviceSerializer,ReportSerializer,SupportSerializer
 
 
 class ProductViewSet(viewsets.ModelViewSet):
@@ -118,3 +118,7 @@ class ReportViewSet(viewsets.ModelViewSet):
     #     if value is not None:
     #         queryset = queryset.filter(authorized=value)
     #     return queryset
+
+class SupportViewSet(viewsets.ModelViewSet):
+    queryset=Support.objects.all()
+    serializer_class=SupportSerializer
