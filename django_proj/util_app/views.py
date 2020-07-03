@@ -14,7 +14,7 @@ class Meta(type):
         upload_detail = getattr(cls, "upload_detail")
         serializer_class = getattr(cls, "serializer_class")
         model_class = getattr(cls, "model_class")
-        cls.validate = lambda request: validate_detail(request, serializer_class)
+        cls.validate = lambda request: validate_detail(request, serializer_class, model_class)
         cls.upload = lambda request : upload_detail(request, serializer_class, model_class)
 
 
@@ -22,7 +22,7 @@ class CsvUploadViewSet(metaclass=Meta):
     serializer_class = None
     model_class = None
 
-    def validate_detail(request, serializer_class):
+    def validate_detail(request, serializer_class, model_class):
 
         path = request.path
         m = re.match("/util/upload/([^/]+)/.*", path)
@@ -54,6 +54,9 @@ class CsvUploadViewSet(metaclass=Meta):
             data = json.loads(json_data)
             serializer = serializer_class(data=data, many=True)
             if serializer.is_valid():
+                for dict in [item for item in data if "id" in item and model_class.objects.filter(id=item["id"])]:
+                    dict["exists__"]=True
+
                 params["records"] = data
                 params["json"] = json_data
             else:
@@ -71,10 +74,16 @@ class CsvUploadViewSet(metaclass=Meta):
 
         url = "./fail/"
         if "json" in request.POST:
-            serializer = serializer_class(data=json.loads(request.POST["json"]), many=True)
+            dict_list=json.loads(request.POST["json"])
+            serializer = serializer_class(data=dict_list, many=True)
             if serializer.is_valid():
-                for data in serializer.validated_data:
-                    obj = model_class.objects.create(**data)
+                for dict, data in zip(dict_list, serializer.validated_data):
+                    if "id" in dict:
+                        data["id"]=dict["id"]
+
+                    if not ("id" in data and model_class.objects.filter(pk=data["id"]).update(**data)):
+                        obj = model_class.objects.create(**data)
+
                 url = "./success/"
 
         return redirect(url)

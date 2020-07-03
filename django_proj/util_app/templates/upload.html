@@ -38,7 +38,13 @@ $(function(){
   {% for row in records %}
   <tr>
     {% for k, v in row.items %}
-    <td>{{v}}</td>
+      {% ifnotequal k "exists__" %}
+        {% if row.exists__ %}
+        <td><font color=red>{{v}}</font></td>
+        {% else %}
+        <td>{{v}}</td>
+        {% endif %}
+      {% endifnotequal %}
     {% endfor %}
   </tr>
   {% endfor %}
