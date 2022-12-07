@@ -9,7 +9,7 @@
   "author": "takmorisawa",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.1",
+    "express": "^4.18.2",
     "forever": "^2.0.0",
     "mysql": "^2.18.1"
   }
